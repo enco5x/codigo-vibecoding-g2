@@ -1,0 +1,52 @@
+# --- Node.js ---
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.venv/
+env/
+venv/
+.pytest_cache/
+.coverage
+coverage_html/
+.tox/
+.mypy_cache/
+
+# --- Environment & Secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Database ---
+db.sqlite3
+prisma/*.db
+
+# --- Logs ---
+*.log
+server_err.txt
+server_out.txt
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OpenCode internal (agent deps) ---
+.opencode/node_modules/
+.opencode/package.json
+.opencode/package-lock.json
+.opencode/bun.lock
+.opencode/.gitignore
