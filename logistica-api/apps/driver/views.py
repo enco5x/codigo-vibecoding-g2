@@ -1,12 +1,12 @@
 from rest_framework.viewsets import ModelViewSet
-from apps.core.permissions import IsAdminOrReadOnly
+from apps.core.permissions import IsAdminOrManager
 from .models import Driver
 from .serializers import DriverListSerializer, DriverDetailSerializer, DriverCreateSerializer
 
 
 class DriverViewSet(ModelViewSet):
     queryset = Driver.objects.all()
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrManager]
 
     def get_serializer_class(self):
         if self.action == 'list':

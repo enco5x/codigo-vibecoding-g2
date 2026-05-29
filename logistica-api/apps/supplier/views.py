@@ -1,12 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
-from apps.core.permissions import IsAdminOrReadOnly
+from apps.core.permissions import IsAdminOrManager
 from .models import Supplier
 from .serializers import SupplierListSerializer, SupplierDetailSerializer, SupplierCreateSerializer
 
-
 class SupplierViewSet(ModelViewSet):
     queryset = Supplier.objects.all()
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrManager]
 
     def get_serializer_class(self):
         if self.action == 'list':

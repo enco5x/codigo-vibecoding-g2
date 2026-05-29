@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from apps.core.permissions import IsAdminOrReadOnly
+from apps.core.permissions import IsAdminOrManager
 from .models import Route, RouteStop
 from .serializers import (
     RouteListSerializer, RouteDetailSerializer,
@@ -12,7 +12,7 @@ from .serializers import (
 
 class RouteViewSet(ModelViewSet):
     queryset = Route.objects.all()
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrManager]
 
     def get_serializer_class(self):
         if self.action == 'list':
