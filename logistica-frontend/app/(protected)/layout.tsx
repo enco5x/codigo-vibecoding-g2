@@ -32,7 +32,7 @@ export default function ProtectedLayout({
   if (!isAuthenticated) return null
 
   return (
-    <div className="dark flex min-h-screen bg-gradient-to-br from-slate-900 to-[#0B1120]">
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-900 to-[#0B1120]">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="flex flex-1 flex-col">
         <Navbar onToggle={() => setSidebarOpen((prev) => !prev)} />

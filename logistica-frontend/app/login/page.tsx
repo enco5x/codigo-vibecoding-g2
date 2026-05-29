@@ -14,7 +14,7 @@ export default function LoginPage() {
   }, [isAuthenticated, router])
 
   return (
-    <div className="dark flex min-h-screen items-center justify-center bg-gradient-to-b from-[#1E293B] to-[#0F172A]">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#1E293B] to-[#0F172A]">
       <LoginForm />
     </div>
   )
