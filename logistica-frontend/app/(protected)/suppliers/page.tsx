@@ -12,7 +12,7 @@ export default function SuppliersPage() {
   const [deleting, setDeleting] = useState<SupplierList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <SuppliersList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onEdit={(s) => { setEditing(s); setFormOpen(true) }}
@@ -20,6 +20,6 @@ export default function SuppliersPage() {
       />
       <SupplierForm open={formOpen} onOpenChange={setFormOpen} supplier={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} supplier={deleting} />
-    </div>
+    </>
   )
 }

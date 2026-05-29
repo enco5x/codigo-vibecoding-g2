@@ -138,21 +138,40 @@ class IsAdminOrManagerTest(PermissionBaseTest):
         request = self._make_request(user=user)
         self.assertTrue(IsAdminOrManager().has_permission(request, None))
 
-    def test_driver_user_no_permission(self):
+    def test_driver_user_read_allowed(self):
         user = User.objects.create_user(username='drv', password='pass')
         user.groups.add(self.driver_group)
-        request = self._make_request(user=user)
+        request = self._make_request(user=user, method='GET')
+        self.assertTrue(IsAdminOrManager().has_permission(request, None))
+
+    def test_driver_user_write_denied(self):
+        user = User.objects.create_user(username='drv', password='pass')
+        user.groups.add(self.driver_group)
+        request = self._make_request(user=user, method='POST')
         self.assertFalse(IsAdminOrManager().has_permission(request, None))
 
-    def test_customer_user_no_permission(self):
+    def test_customer_user_read_allowed(self):
         user = User.objects.create_user(username='cust', password='pass')
         user.groups.add(self.customer_group)
-        request = self._make_request(user=user)
+        request = self._make_request(user=user, method='GET')
+        self.assertTrue(IsAdminOrManager().has_permission(request, None))
+
+    def test_customer_user_write_denied(self):
+        user = User.objects.create_user(username='cust', password='pass')
+        user.groups.add(self.customer_group)
+        request = self._make_request(user=user, method='POST')
         self.assertFalse(IsAdminOrManager().has_permission(request, None))
 
     def test_unauthenticated_user_no_permission(self):
         request = self._make_request(user=None)
         self.assertFalse(IsAdminOrManager().has_permission(request, None))
+
+    def test_superuser_write_allowed(self):
+        user = User.objects.create_user(
+            username='su', password='pass', is_superuser=True
+        )
+        request = self._make_request(user=user, method='POST')
+        self.assertTrue(IsAdminOrManager().has_permission(request, None))
 
 
 # ──────────────────────────────────────────────

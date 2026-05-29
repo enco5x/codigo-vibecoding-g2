@@ -12,7 +12,7 @@ export default function RoutesPage() {
   const [deleting, setDeleting] = useState<RouteList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <RoutesList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onEdit={(r) => { setEditing(r); setFormOpen(true) }}
@@ -20,6 +20,6 @@ export default function RoutesPage() {
       />
       <RouteForm open={formOpen} onOpenChange={setFormOpen} route={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} route={deleting} />
-    </div>
+    </>
   )
 }

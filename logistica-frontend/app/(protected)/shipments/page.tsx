@@ -12,13 +12,13 @@ export default function ShipmentsPage() {
   const [deleting, setDeleting] = useState<ShipmentList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <ShipmentsList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onDelete={(s) => setDeleting(s)}
       />
       <ShipmentForm open={formOpen} onOpenChange={setFormOpen} shipment={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} shipment={deleting} />
-    </div>
+    </>
   )
 }

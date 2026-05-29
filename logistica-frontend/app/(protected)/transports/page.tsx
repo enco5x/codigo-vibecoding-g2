@@ -12,7 +12,7 @@ export default function TransportsPage() {
   const [deleting, setDeleting] = useState<TransportList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <TransportsList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onEdit={(t) => { setEditing(t); setFormOpen(true) }}
@@ -20,6 +20,6 @@ export default function TransportsPage() {
       />
       <TransportForm open={formOpen} onOpenChange={setFormOpen} transport={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} transport={deleting} />
-    </div>
+    </>
   )
 }

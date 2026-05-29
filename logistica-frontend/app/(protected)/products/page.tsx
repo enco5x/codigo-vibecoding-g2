@@ -12,7 +12,7 @@ export default function ProductsPage() {
   const [deleting, setDeleting] = useState<ProductList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <ProductsList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onEdit={(p) => { setEditing(p); setFormOpen(true) }}
@@ -20,6 +20,6 @@ export default function ProductsPage() {
       />
       <ProductForm open={formOpen} onOpenChange={setFormOpen} product={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} product={deleting} />
-    </div>
+    </>
   )
 }

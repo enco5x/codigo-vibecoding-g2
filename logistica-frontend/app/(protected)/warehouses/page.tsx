@@ -12,7 +12,7 @@ export default function WarehousesPage() {
   const [deleting, setDeleting] = useState<WarehouseList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <WarehousesList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onEdit={(w) => { setEditing(w); setFormOpen(true) }}
@@ -20,6 +20,6 @@ export default function WarehousesPage() {
       />
       <WarehouseForm open={formOpen} onOpenChange={setFormOpen} warehouse={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} warehouse={deleting} />
-    </div>
+    </>
   )
 }

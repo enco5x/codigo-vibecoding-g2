@@ -12,7 +12,7 @@ export default function DriversPage() {
   const [deleting, setDeleting] = useState<DriverList | null>(null)
 
   return (
-    <div className="p-6">
+    <>
       <DriversList
         onCreate={() => { setEditing(null); setFormOpen(true) }}
         onEdit={(d) => { setEditing(d); setFormOpen(true) }}
@@ -20,6 +20,6 @@ export default function DriversPage() {
       />
       <DriverForm open={formOpen} onOpenChange={setFormOpen} driver={editing} />
       <DeleteDialog open={!!deleting} onOpenChange={() => setDeleting(null)} driver={deleting} />
-    </div>
+    </>
   )
 }

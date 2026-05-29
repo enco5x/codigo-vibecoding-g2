@@ -26,7 +26,7 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="p-6">
+    <>
       <CustomersList
         onCreate={handleCreate}
         onEdit={handleEdit}
@@ -42,6 +42,6 @@ export default function CustomersPage() {
         onOpenChange={() => setDeletingCustomer(null)}
         customer={deletingCustomer}
       />
-    </div>
+    </>
   )
 }
