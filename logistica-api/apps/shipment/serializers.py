@@ -1,3 +1,4 @@
+import uuid
 from rest_framework import serializers
 from apps.customer.models import Customer
 from apps.warehouse.models import Warehouse
@@ -56,6 +57,10 @@ class ShipmentCreateSerializer(serializers.ModelSerializer):
             'destination_address', 'destination_city', 'destination_country',
             'scheduled_pickup', 'scheduled_delivery', 'weight_kg', 'notes'
         ]
+
+    def create(self, validated_data):
+        validated_data['tracking_number'] = f"TN-{uuid.uuid4().hex[:8].upper()}"
+        return super().create(validated_data)
 
 
 class ShipmentStatusUpdateSerializer(serializers.ModelSerializer):

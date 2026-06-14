@@ -48,3 +48,8 @@ class IsStaffOrReadOnly(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return request.user.groups.filter(name__in=['admin', 'manager', 'staff']).exists()
+
+
+class IsSuperAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.is_superuser
