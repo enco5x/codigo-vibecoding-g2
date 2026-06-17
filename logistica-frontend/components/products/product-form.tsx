@@ -176,21 +176,25 @@ export function ProductForm({ open, onOpenChange, product }: Props) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="supplier">Proveedor</Label>
-                  <Select id="supplier" value={form.supplier} onChange={(e) => setForm((prev) => ({ ...prev, supplier: e.target.value }))} disabled={isPending}>
-                    <option value="">Seleccionar...</option>
-                    {suppliers.map((s) => (
-                      <option key={s.id} value={s.id}>{s.company_name}</option>
-                    ))}
-                  </Select>
+                  <Select
+                    id="supplier"
+                    value={form.supplier}
+                    onValueChange={(v) => setForm((prev) => ({ ...prev, supplier: v }))}
+                    placeholder="Seleccionar..."
+                    disabled={isPending}
+                    items={suppliers.map((s) => ({ value: String(s.id), label: s.company_name }))}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="warehouse">Bodega</Label>
-                  <Select id="warehouse" value={form.warehouse} onChange={(e) => setForm((prev) => ({ ...prev, warehouse: e.target.value }))} disabled={isPending}>
-                    <option value="">Seleccionar...</option>
-                    {warehouses.map((w) => (
-                      <option key={w.id} value={w.id}>{w.name}</option>
-                    ))}
-                  </Select>
+                  <Select
+                    id="warehouse"
+                    value={form.warehouse}
+                    onValueChange={(v) => setForm((prev) => ({ ...prev, warehouse: v }))}
+                    placeholder="Seleccionar..."
+                    disabled={isPending}
+                    items={warehouses.map((w) => ({ value: String(w.id), label: w.name }))}
+                  />
                 </div>
               </div>
             </div>

@@ -22,7 +22,7 @@ export function LoginForm() {
     setLoading(true)
     try {
       await login({ username, password })
-      router.push("/")
+      router.push("/dashboard")
     } catch (err: unknown) {
       if (err && typeof err === "object" && "response" in err) {
         const axiosErr = err as { response?: { data?: { detail?: string } } }

@@ -110,12 +110,14 @@ export function RouteForm({ open, onOpenChange, route }: Props) {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="transport">Vehículo</Label>
-                <Select id="transport" value={form.transport} onChange={(e) => setForm((prev) => ({ ...prev, transport: e.target.value }))} disabled={isPending}>
-                  <option value="">Seleccionar...</option>
-                  {transports.map((t) => (
-                    <option key={t.id} value={t.id}>{t.plate_number} ({t.vehicle_type ?? t.vehicle_model ?? "sin tipo"})</option>
-                  ))}
-                </Select>
+                <Select
+                  id="transport"
+                  value={form.transport}
+                  onValueChange={(v) => setForm((prev) => ({ ...prev, transport: v }))}
+                  placeholder="Seleccionar..."
+                  disabled={isPending}
+                  items={transports.map((t) => ({ value: String(t.id), label: `${t.plate_number} (${t.vehicle_type ?? t.vehicle_model ?? "sin tipo"})` }))}
+                />
               </div>
             </div>
 

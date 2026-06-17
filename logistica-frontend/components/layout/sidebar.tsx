@@ -14,21 +14,22 @@ import {
   Ship,
   Route,
   LogOut,
-  ChevronLeft,
+  Shield,
+  Settings,
 } from "lucide-react"
 import { useAuthStore } from "@/lib/store/auth.store"
 import { useRouter } from "next/navigation"
+import { canAccess, type Module } from "@/lib/permissions"
 
-const links = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/customers", label: "Clientes", icon: Users },
-  { href: "/warehouses", label: "Bodegas", icon: Warehouse },
-  { href: "/suppliers", label: "Proveedores", icon: Building2 },
-  { href: "/products", label: "Productos", icon: Package },
-  { href: "/drivers", label: "Conductores", icon: Truck },
-  { href: "/transports", label: "Vehículos", icon: Car },
-  { href: "/shipments", label: "Envíos", icon: Ship },
-  { href: "/routes", label: "Rutas", icon: Route },
+const modules: { href: string; label: string; icon: React.ComponentType<{ className?: string }>; module: Module }[] = [
+  { href: "/customers", label: "Clientes", icon: Users, module: "customers" },
+  { href: "/warehouses", label: "Bodegas", icon: Warehouse, module: "warehouses" },
+  { href: "/suppliers", label: "Proveedores", icon: Building2, module: "suppliers" },
+  { href: "/products", label: "Productos", icon: Package, module: "products" },
+  { href: "/drivers", label: "Conductores", icon: Truck, module: "drivers" },
+  { href: "/transports", label: "Vehículos", icon: Car, module: "transports" },
+  { href: "/shipments", label: "Envíos", icon: Ship, module: "shipments" },
+  { href: "/routes", label: "Rutas", icon: Route, module: "routes" },
 ]
 
 interface Props {
@@ -40,7 +41,15 @@ export function Sidebar({ open, onClose }: Props) {
   const pathname = usePathname()
   const logout = useAuthStore((s) => s.logout)
   const username = useAuthStore((s) => s.username)
+  const user = useAuthStore((s) => s.user)
+  const isSuperAdmin = useAuthStore((s) => s.isSuperAdmin)
   const router = useRouter()
+
+  const groups = user?.groups ?? []
+  const permissions = user?.permissions ?? []
+  const isSuperuser = user?.is_superuser ?? false
+
+  const visibleModules = modules.filter((m) => canAccess(m.module, "read", groups, permissions, isSuperuser))
 
   const handleLogout = async () => {
     await logout()
@@ -74,7 +83,21 @@ export function Sidebar({ open, onClose }: Props) {
         </div>
 
         <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
-          {links.map((link) => {
+          <Link
+            href="/dashboard"
+            onClick={onClose}
+            className={cn(
+              "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+              pathname === "/dashboard"
+                ? "bg-cyan-500/10 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.06)]"
+                : "text-white/50 hover:bg-white/[0.04] hover:text-white/80"
+            )}
+          >
+            <LayoutDashboard className={cn("h-4 w-4 shrink-0 transition-colors duration-200", pathname === "/dashboard" && "text-cyan-400")} />
+            Dashboard
+          </Link>
+
+          {visibleModules.map((link) => {
             const Icon = link.icon
             const isActive = pathname === link.href
             return (
@@ -89,14 +112,45 @@ export function Sidebar({ open, onClose }: Props) {
                     : "text-white/50 hover:bg-white/[0.04] hover:text-white/80"
                 )}
               >
-                <Icon className={cn(
-                  "h-4 w-4 shrink-0 transition-colors duration-200",
-                  isActive && "text-cyan-400"
-                )} />
+                <Icon className={cn("h-4 w-4 shrink-0 transition-colors duration-200", isActive && "text-cyan-400")} />
                 {link.label}
               </Link>
             )
           })}
+
+          {isSuperAdmin && (
+            <>
+              <div className="mt-4 mb-1 px-3 text-[10px] font-semibold uppercase tracking-wider text-white/20">
+                Administración
+              </div>
+              <Link
+                href="/users"
+                onClick={onClose}
+                className={cn(
+                  "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                  pathname === "/users" || pathname.startsWith("/users/")
+                    ? "bg-cyan-500/10 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.06)]"
+                    : "text-white/50 hover:bg-white/[0.04] hover:text-white/80"
+                )}
+              >
+                <Settings className="h-4 w-4 shrink-0" />
+                Usuarios
+              </Link>
+              <Link
+                href="/users/groups"
+                onClick={onClose}
+                className={cn(
+                  "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                  pathname === "/users/groups"
+                    ? "bg-cyan-500/10 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.06)]"
+                    : "text-white/50 hover:bg-white/[0.04] hover:text-white/80"
+                )}
+              >
+                <Shield className="h-4 w-4 shrink-0" />
+                Roles
+              </Link>
+            </>
+          )}
         </nav>
 
         <div className="border-t border-white/5 p-3">

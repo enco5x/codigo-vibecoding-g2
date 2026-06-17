@@ -33,6 +33,8 @@ import {
   Eye,
 } from "lucide-react"
 import Link from "next/link"
+import { useAuthStore } from "@/lib/store/auth.store"
+import { canAccess } from "@/lib/permissions"
 
 const helper = createColumnHelper<RouteList>()
 
@@ -48,6 +50,11 @@ export function RoutesList({ onEdit, onDelete, onCreate }: Props) {
   const [search, setSearch] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const { data, isLoading, isError, refetch } = useRoutes(page)
+  const user = useAuthStore((s) => s.user)
+  const groups = user?.groups ?? []
+  const permissions = user?.permissions ?? []
+  const isSuperuser = user?.is_superuser ?? false
+  const canWrite = canAccess("routes", "write", groups, permissions, isSuperuser)
 
   const columns = useMemo(
     () => [
@@ -91,17 +98,21 @@ export function RoutesList({ onEdit, onDelete, onCreate }: Props) {
             <Link href={`/routes/${row.original.id}`} className="flex h-8 w-8 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/[0.06] hover:text-white/80">
               <Eye className="h-4 w-4" />
             </Link>
-            <Button variant="ghost" size="icon-xs" onClick={() => onEdit(row.original)} className="text-white/40 hover:text-white/80">
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon-xs" onClick={() => onDelete(row.original)} className="text-white/40 hover:text-red-400">
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            {canWrite && (
+              <Button variant="ghost" size="icon-xs" onClick={() => onEdit(row.original)} className="text-white/40 hover:text-white/80">
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
+            {canWrite && (
+              <Button variant="ghost" size="icon-xs" onClick={() => onDelete(row.original)} className="text-white/40 hover:text-red-400">
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         ),
       }),
     ],
-    [onEdit, onDelete]
+    [onEdit, onDelete, canWrite]
   )
 
   const filteredData = useMemo(() => {
@@ -155,10 +166,12 @@ export function RoutesList({ onEdit, onDelete, onCreate }: Props) {
         onSearchChange={setSearch}
         onExport={() => {}}
         action={
-          <Button onClick={onCreate} className="bg-cyan-500 text-white shadow-lg shadow-cyan-500/20 transition-all duration-200 hover:bg-cyan-400 hover:shadow-cyan-400/30 active:scale-[0.98]">
-            <Plus className="mr-2 h-4 w-4" />
-            Nueva ruta
-          </Button>
+          canWrite && (
+            <Button onClick={onCreate} className="bg-cyan-500 text-white shadow-lg shadow-cyan-500/20 transition-all duration-200 hover:bg-cyan-400 hover:shadow-cyan-400/30 active:scale-[0.98]">
+              <Plus className="mr-2 h-4 w-4" />
+              Nueva ruta
+            </Button>
+          )
         }
       >
         <select

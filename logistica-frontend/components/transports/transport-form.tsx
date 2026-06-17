@@ -134,12 +134,14 @@ export function TransportForm({ open, onOpenChange, transport }: Props) {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="driver">Conductor</Label>
-                  <Select id="driver" value={form.driver} onChange={(e) => setForm((prev) => ({ ...prev, driver: e.target.value }))} disabled={isPending}>
-                    <option value="">Seleccionar...</option>
-                    {drivers.map((d) => (
-                      <option key={d.id} value={d.id}>{d.license_number}</option>
-                    ))}
-                  </Select>
+                  <Select
+                    id="driver"
+                    value={form.driver}
+                    onValueChange={(v) => setForm((prev) => ({ ...prev, driver: v }))}
+                    placeholder="Seleccionar..."
+                    disabled={isPending}
+                    items={drivers.map((d) => ({ value: String(d.id), label: d.license_number }))}
+                  />
                 </div>
               </div>
             </div>

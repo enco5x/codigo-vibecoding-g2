@@ -1,8 +1,12 @@
 "use client"
 
+import { useState, useRef, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { useAuthStore } from "@/lib/store/auth.store"
 import { Button } from "@/components/ui/button"
-import { Menu, Search, Bell } from "lucide-react"
+import { Menu, Search, Bell, User, LogOut } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface Props {
   onToggle: () => void
@@ -10,10 +14,31 @@ interface Props {
 
 export function Navbar({ onToggle }: Props) {
   const username = useAuthStore((s) => s.username)
+  const logout = useAuthStore((s) => s.logout)
+  const router = useRouter()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const initials = username
     ? username.slice(0, 2).toUpperCase()
     : "AD"
+
+  useEffect(() => {
+    if (!dropdownOpen) return
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [dropdownOpen])
+
+  const handleLogout = async () => {
+    setDropdownOpen(false)
+    await logout()
+    router.push("/login")
+  }
 
   return (
     <header className="border-b border-white/5 bg-white/[0.02] backdrop-blur-xl">
@@ -38,11 +63,42 @@ export function Navbar({ onToggle }: Props) {
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-cyan-400" />
         </button>
 
-        <div className="flex items-center gap-3 border-l border-white/5 pl-4">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/20 text-[11px] font-semibold text-cyan-400">
-            {initials}
-          </div>
-          <span className="hidden text-sm text-white/60 sm:block">{username}</span>
+        <div ref={dropdownRef} className="relative">
+          <button
+            onClick={() => setDropdownOpen((p) => !p)}
+            className={cn(
+              "flex items-center gap-3 rounded-lg border border-transparent px-2 py-1.5 transition-all duration-200",
+              dropdownOpen
+                ? "border-cyan-500/30 bg-cyan-500/10"
+                : "hover:bg-white/[0.04]"
+            )}
+          >
+            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-cyan-500/20 text-[11px] font-semibold text-cyan-400">
+              {initials}
+            </div>
+            <span className="hidden text-sm text-white/60 sm:block">{username}</span>
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-white/10 bg-[#12122a] p-1 shadow-lg shadow-black/40">
+              <Link
+                href="/profile"
+                onClick={() => setDropdownOpen(false)}
+                className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-cyan-500/15 hover:text-cyan-300"
+              >
+                <User className="h-4 w-4" />
+                Ver perfil
+              </Link>
+              <hr className="my-1 border-white/5" />
+              <button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-red-500/15 hover:text-red-400"
+              >
+                <LogOut className="h-4 w-4" />
+                Cerrar sesión
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

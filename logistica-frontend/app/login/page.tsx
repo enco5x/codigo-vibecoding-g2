@@ -10,7 +10,7 @@ export default function LoginPage() {
   const router = useRouter()
 
   useEffect(() => {
-    if (isAuthenticated) router.push("/")
+    if (isAuthenticated) router.push("/dashboard")
   }, [isAuthenticated, router])
 
   return (
