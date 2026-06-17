@@ -8,7 +8,7 @@ import {
   updateWarehouse,
   deleteWarehouse,
 } from "@/lib/api/warehouses"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 
 beforeEach(() => {
   clearTokens()

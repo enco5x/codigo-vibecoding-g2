@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest"
-import { setTokens, clearTokens, API_BASE } from "@/lib/axios"
+import { setTokens, clearTokens, API_BASE_URL } from "@/lib/api/client"
 import { http, HttpResponse } from "msw"
 import { server } from "@/test/msw/server"
 
@@ -29,12 +29,12 @@ describe("request interceptor", () => {
   it("adds Bearer header when token exists", async () => {
     setTokens("test-bearer-token", "test-refresh")
     server.use(
-      http.get(`${API_BASE}/auth/me/`, ({ request }) => {
+      http.get(`${API_BASE_URL}/auth/me/`, ({ request }) => {
         const auth = request.headers.get("Authorization")
         return HttpResponse.json({ auth_sent: auth })
       }),
     )
-    const { api } = await import("@/lib/axios")
+    const { api } = await import("@/lib/api/client")
     const res = await api.get("/auth/me/")
     expect(res.data.auth_sent).toBe("Bearer test-bearer-token")
   })
@@ -46,7 +46,7 @@ describe("response interceptor", () => {
 
     let callCount = 0
     server.use(
-      http.get(`${API_BASE}/auth/me/`, () => {
+      http.get(`${API_BASE_URL}/auth/me/`, () => {
         callCount++
         if (callCount === 1) {
           return HttpResponse.json({ detail: "Unauthorized" }, { status: 401 })
@@ -55,7 +55,7 @@ describe("response interceptor", () => {
       }),
     )
 
-    const { api: testApi } = await import("@/lib/axios")
+    const { api: testApi } = await import("@/lib/api/client")
     const res = await testApi.get("/auth/me/")
     expect(res.data.username).toBe("admin")
     expect(callCount).toBe(2)
@@ -65,12 +65,12 @@ describe("response interceptor", () => {
     setTokens("expired-token", "bad-refresh-token")
 
     server.use(
-      http.get(`${API_BASE}/auth/me/`, () => {
+      http.get(`${API_BASE_URL}/auth/me/`, () => {
         return HttpResponse.json({ detail: "Unauthorized" }, { status: 401 })
       }),
     )
 
-    const { api: testApi } = await import("@/lib/axios")
+    const { api: testApi } = await import("@/lib/api/client")
     await expect(testApi.get("/auth/me/")).rejects.toThrow()
     expect(localStorage.getItem("access")).toBeNull()
     expect(localStorage.getItem("refresh")).toBeNull()
@@ -80,12 +80,12 @@ describe("response interceptor", () => {
     setTokens("valid-token", "valid-refresh")
 
     server.use(
-      http.get(`${API_BASE}/auth/me/`, () => {
+      http.get(`${API_BASE_URL}/auth/me/`, () => {
         return HttpResponse.json({ detail: "Server error" }, { status: 500 })
       }),
     )
 
-    const { api: testApi } = await import("@/lib/axios")
+    const { api: testApi } = await import("@/lib/api/client")
     await expect(testApi.get("/auth/me/")).rejects.toThrow()
   })
 })

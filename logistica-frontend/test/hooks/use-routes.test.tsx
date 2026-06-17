@@ -11,7 +11,7 @@ import {
   useDeleteRoute,
   useAddRouteStop,
 } from "@/lib/hooks/use-routes"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { type ReactNode } from "react"
 

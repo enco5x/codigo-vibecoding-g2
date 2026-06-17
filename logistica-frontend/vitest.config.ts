@@ -9,6 +9,9 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./test/setup.ts"],
     exclude: ["e2e/**", "node_modules/**", ".opencode/**", ".next/**", "playwright/**"],
+    env: {
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:8000/api/v1",
+    },
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],

@@ -11,7 +11,7 @@ import {
   addShipmentItem,
   deleteShipment,
 } from "@/lib/api/shipments"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 
 beforeEach(() => {
   clearTokens()

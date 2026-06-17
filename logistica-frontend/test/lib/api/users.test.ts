@@ -14,7 +14,7 @@ import {
   deleteGroup,
   getPermissions,
 } from "@/lib/api/users"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 
 beforeEach(() => {
   clearTokens()

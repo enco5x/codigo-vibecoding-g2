@@ -9,7 +9,7 @@ import {
   deleteRoute,
   addRouteStop,
 } from "@/lib/api/routes"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 
 beforeEach(() => {
   clearTokens()

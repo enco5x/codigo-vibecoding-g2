@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 import { login, logout, getMe, refreshToken } from "@/lib/auth"
 
 beforeEach(() => {

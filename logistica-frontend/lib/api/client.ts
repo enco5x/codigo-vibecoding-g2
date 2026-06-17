@@ -1,9 +1,10 @@
 import axios from "axios"
 
-const API_BASE = "http://localhost:8000/api/v1"
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1"
 
 export const api = axios.create({
-  baseURL: API_BASE,
+  baseURL: API_BASE_URL,
   headers: { "Content-Type": "application/json" },
 })
 
@@ -24,15 +25,14 @@ api.interceptors.response.use(
       const refresh = localStorage.getItem("refresh")
       if (refresh) {
         try {
-          const { data } = await axios.post(`${API_BASE}/auth/refresh/`, {
+          const { data } = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
             refresh,
           })
           localStorage.setItem("access", data.access)
           original.headers.Authorization = `Bearer ${data.access}`
           return api(original)
         } catch {
-          localStorage.removeItem("access")
-          localStorage.removeItem("refresh")
+          clearTokens()
           window.location.href = "/login"
         }
       } else {
@@ -40,7 +40,7 @@ api.interceptors.response.use(
       }
     }
     return Promise.reject(error)
-  }
+  },
 )
 
 export function setTokens(access: string, refresh: string) {

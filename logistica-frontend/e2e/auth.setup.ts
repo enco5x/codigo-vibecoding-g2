@@ -1,7 +1,7 @@
 import { test as setup, expect } from "@playwright/test";
 
 const BASE_URL = process.env.E2E_BASE_URL ?? "http://localhost:3000";
-const API_BASE = "http://localhost:8000/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 const AUTH_FILE = "playwright/.auth/user.json";
 
 const USERNAME = process.env.E2E_USERNAME ?? "admin";

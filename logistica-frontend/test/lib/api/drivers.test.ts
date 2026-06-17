@@ -8,7 +8,7 @@ import {
   updateDriver,
   deleteDriver,
 } from "@/lib/api/drivers"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 
 beforeEach(() => {
   clearTokens()

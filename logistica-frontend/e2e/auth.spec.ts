@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const USERNAME = process.env.E2E_USERNAME ?? "admin";
 const PASSWORD = process.env.E2E_PASSWORD ?? "admin123";
-const API_BASE = "http://localhost:8000/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 test.describe("Login", () => {
   test.skip(

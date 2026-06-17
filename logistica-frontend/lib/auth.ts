@@ -1,4 +1,4 @@
-import { api } from "@/lib/axios"
+import { api } from "@/lib/api/client"
 import type { AuthTokens, LoginRequest, User } from "@/lib/types"
 
 export async function login(data: LoginRequest): Promise<AuthTokens> {

@@ -9,7 +9,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "@/lib/api/products"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 
 beforeEach(() => {
   clearTokens()

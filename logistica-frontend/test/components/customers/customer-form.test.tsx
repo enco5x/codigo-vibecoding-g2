@@ -3,7 +3,7 @@ import { renderWithQuery } from "@/test/utils/renderWithQuery"
 import { server } from "@/test/msw/server"
 import { customersHandlers } from "@/test/handlers/customers"
 import { CustomerForm } from "@/components/customers/customer-form"
-import { setTokens, clearTokens } from "@/lib/axios"
+import { setTokens, clearTokens } from "@/lib/api/client"
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
