@@ -1,7 +1,7 @@
 import { test, expect } from "./fixtures";
 
 const TS = Date.now();
-const API = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
 const USERNAME = process.env.E2E_USERNAME ?? "admin";
 const PASSWORD = process.env.E2E_PASSWORD ?? "admin123";
 
