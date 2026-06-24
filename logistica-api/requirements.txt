@@ -26,3 +26,5 @@ model-bakery==1.23.4
 # production
 gunicorn==23.0.0
 whitenoise==6.8.2
+# payments
+stripe==15.2.1

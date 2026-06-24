@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'apps.transport',
     'apps.shipment',
     'apps.route',
+    'apps.payment',
 ]
 
 MIDDLEWARE = [
@@ -175,4 +176,9 @@ STORAGES = {
 }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Stripe
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default='')
+STRIPE_WEBHOOK_SECRET = config('STRIPE_WEBHOOK_SECRET', default='')
 

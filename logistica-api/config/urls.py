@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from apps.payment.views import stripe_webhook
 
 
 def api_root(request):
@@ -36,6 +37,7 @@ def api_root(request):
         'transports': '/api/v1/transports/',
         'shipments': '/api/v1/shipments/',
         'routes': '/api/v1/routes/',
+        'payments': '/api/v1/payments/',
     })
 
 
@@ -53,6 +55,8 @@ urlpatterns = [
     path('api/v1/transports/', include('apps.transport.urls')),
     path('api/v1/shipments/', include('apps.shipment.urls')),
     path('api/v1/routes/', include('apps.route.urls')),
+    path('api/v1/payments/', include('apps.payment.urls')),
+    path('payments/webhook/', stripe_webhook, name='stripe-webhook'),
 ]
 
 
