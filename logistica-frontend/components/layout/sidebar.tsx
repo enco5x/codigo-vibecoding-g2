@@ -16,6 +16,7 @@ import {
   LogOut,
   Shield,
   Settings,
+  ShoppingCart,
 } from "lucide-react"
 import { useAuthStore } from "@/lib/store/auth.store"
 import { useRouter } from "next/navigation"
@@ -95,6 +96,20 @@ export function Sidebar({ open, onClose }: Props) {
           >
             <LayoutDashboard className={cn("h-4 w-4 shrink-0 transition-colors duration-200", pathname === "/dashboard" && "text-cyan-400")} />
             Dashboard
+          </Link>
+
+          <Link
+            href="/cart"
+            onClick={onClose}
+            className={cn(
+              "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+              pathname === "/cart"
+                ? "bg-cyan-500/10 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.06)]"
+                : "text-white/50 hover:bg-white/[0.04] hover:text-white/80"
+            )}
+          >
+            <ShoppingCart className={cn("h-4 w-4 shrink-0 transition-colors duration-200", pathname === "/cart" && "text-cyan-400")} />
+            Tienda
           </Link>
 
           {visibleModules.map((link) => {

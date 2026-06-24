@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuthStore } from "@/lib/store/auth.store"
 import { Button } from "@/components/ui/button"
-import { Menu, Search, Bell, User, LogOut } from "lucide-react"
+import { Menu, Search, Bell, User, LogOut, ShoppingCart } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useCartStore } from "@/lib/store/cart.store"
+import { CartSheet } from "@/components/cart/cart-sheet"
 
 interface Props {
   onToggle: () => void
@@ -17,7 +19,9 @@ export function Navbar({ onToggle }: Props) {
   const logout = useAuthStore((s) => s.logout)
   const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const itemCount = useCartStore((s) => s.getItemCount())
 
   const initials = username
     ? username.slice(0, 2).toUpperCase()
@@ -62,6 +66,20 @@ export function Navbar({ onToggle }: Props) {
           <Bell className="h-4 w-4" />
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-cyan-400" />
         </button>
+
+        <button
+          onClick={() => setCartOpen(true)}
+          className="relative flex h-8 w-8 items-center justify-center rounded-lg text-white/40 transition-colors hover:bg-white/[0.04] hover:text-white/60"
+        >
+          <ShoppingCart className="h-4 w-4" />
+          {itemCount > 0 && (
+            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-cyan-500 px-1 text-[10px] font-semibold text-white">
+              {itemCount > 99 ? "99+" : itemCount}
+            </span>
+          )}
+        </button>
+
+        <CartSheet open={cartOpen} onClose={() => setCartOpen(false)} />
 
         <div ref={dropdownRef} className="relative">
           <button
